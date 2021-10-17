@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1 th:text="'Welcome '+ ${users.username}"></h1>
+<ul  th:each="users : ${users}">
+    <img th:src="'https://drive.google.com/file/d/1xH2JR7rM4SeVw05pa44JbbFVALqSi6Ep/view?usp=sharing'"/>
+    <li th:text="'User Name: ' + ${users.username}"></li>
+    <li th:text="'First Name: ' + ${users.firstName}"></li>
+    <li th:text="'Last Name: ' + ${users.lastName}"></li>
+    <li th:text="'Date Of Birth: ' + ${users.dateOfBirth}"></li>
+    <li th:text="'Biography: ' + ${users.bio}"></li>
+
+
+</ul>
+</body>
+</html>
