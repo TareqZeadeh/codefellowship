@@ -9,7 +9,7 @@
 
 <h1 th:text="'Welcome '+ ${user.username}"></h1>
 <img th:src="@{https://cdn-icons-png.flaticon.com/512/149/149071.png}"/>
-<ul  >
+<ul>
 
     <li th:text="'User Name: ' + ${user.username}"></li>
     <li th:text="'First Name: ' + ${user.firstName}"></li>
@@ -19,8 +19,23 @@
 
 
 </ul>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<div>
+    <form th:action="@{/post}" method="post">
+        <label for="body">Add Post Here</label>
+        <textarea id="body" name="body"></textarea>
+        <input type="submit" value="Add Post"/>
+    </form>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</div>
+
+<div>
+    <h4>Your Posts</h4>
+    <div th:each="post:${user.posts}">
+        <h5 th:text="${'post' + post.createdAt}"></h5>
+        <p  th:text="${post.body}"></p>
+    </div>
+</div>
 </body>
 </html>
