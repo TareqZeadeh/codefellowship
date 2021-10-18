@@ -34,7 +34,7 @@ public class ApplicationUserController {
         return "signup";
     }
     @PostMapping("/signup")
-    public RedirectView signup(@RequestParam String username,
+    public RedirectView signup(Model model,@RequestParam String username,
                                @RequestParam String password,
                                @RequestParam String firstName,
                                @RequestParam String lastName,
@@ -42,14 +42,15 @@ public class ApplicationUserController {
                                @RequestParam String bio){
 
         ApplicationUser applicationUser = new ApplicationUser(username, encoder.encode(password),firstName,lastName,dateOfBirth,bio);
-        applicationUser = applicationUserRepository.save(applicationUser);
+        applicationUser= applicationUserRepository.save(applicationUser);
         Authentication authentication = new UsernamePasswordAuthenticationToken(applicationUser, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new RedirectView("/");
+        model.addAttribute("user",applicationUser);
+        return new RedirectView("/profile");
     }
 
 
-    @GetMapping("/signin")
+    @GetMapping("/login")
     public String signinPage(){
         return"signin";
 
@@ -57,8 +58,18 @@ public class ApplicationUserController {
     @GetMapping("/users/{userName}")
     public String getProfilePage(@PathVariable String userName, Model model) {
     ApplicationUser applicationUser = applicationUserRepository.findApplicationUserByUsername(userName).orElse(null);
-    model.addAttribute("users",applicationUser);
+    model.addAttribute("user",applicationUser);
 
+        return "profile";
+    }
+    @GetMapping("/profile")
+    public String gitProfile(Model model){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ApplicationUser applicationUser = applicationUserRepository.findApplicationUserByUsername(userDetails.getUsername()).orElse(null);
+        if(applicationUser == null){
+            return "error";
+        }
+        model.addAttribute("user",applicationUser);
         return "profile";
     }
 }
