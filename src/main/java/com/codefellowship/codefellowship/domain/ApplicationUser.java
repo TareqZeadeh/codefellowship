@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -12,6 +13,8 @@ public class ApplicationUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+    @OneToMany(mappedBy = "applicationUser")
+    private List<Post> Posts;
 
     @Column(nullable = false,unique = true)
     private String username;
@@ -39,6 +42,14 @@ public class ApplicationUser implements UserDetails {
 
     public String getUsername() {
         return username;
+    }
+
+    public List<Post> getPosts() {
+        return Posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        Posts = posts;
     }
 
     @Override
