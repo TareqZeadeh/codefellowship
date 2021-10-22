@@ -19,7 +19,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class ApplicationUserController {
@@ -60,7 +62,7 @@ public class ApplicationUserController {
     ApplicationUser applicationUser = applicationUserRepository.findApplicationUserByUsername(userName).orElse(null);
     model.addAttribute("user",applicationUser);
 
-        return "profile";
+        return "userProfile";
     }
     @GetMapping("/profile")
     public String gitProfile(Model model){
@@ -71,5 +73,38 @@ public class ApplicationUserController {
         }
         model.addAttribute("user",applicationUser);
         return "profile";
+    }
+
+    @GetMapping("/feed")
+    public String getFollowing(Principal principal , Model model){
+        ApplicationUser applicationUser = applicationUserRepository.findApplicationUserByUsername(principal.getName()).orElse(null);
+        Set<ApplicationUser> following = applicationUser.getFollowing();
+        model.addAttribute("allFollowing" , following);
+        return "feed";
+
+    }
+
+    @GetMapping("/users")
+    public String getAllUsers(Principal principal, Model model){
+        List<ApplicationUser> allUsers = applicationUserRepository.findAll();
+        ApplicationUser applicationUser = applicationUserRepository.findApplicationUserByUsername(principal.getName()).orElse(null);
+        model.addAttribute("allUsers",allUsers);
+        model.addAttribute("loggedUser",applicationUser);
+        return "allUsers";
+    }
+    @PostMapping("/follow")
+    public RedirectView followUser(Principal principal, @RequestParam String username){
+        ApplicationUser currentUser = applicationUserRepository.findApplicationUserByUsername(principal.getName()).orElse(null);
+        ApplicationUser userWantedToFollow = applicationUserRepository.findApplicationUserByUsername(username).orElse(null);
+        currentUser.getFollowing().add(userWantedToFollow);
+        applicationUserRepository.save(currentUser);
+        return new RedirectView("/feed");
+    }
+    @GetMapping("/followers")
+    public String getFollowers(Principal principal , Model model){
+        ApplicationUser applicationUser =applicationUserRepository.findApplicationUserByUsername(principal.getName()).orElse(null);
+        Set<ApplicationUser> followers = applicationUser.getFollowers();
+        model.addAttribute("followers",followers);
+        return "myFollowers";
     }
 }

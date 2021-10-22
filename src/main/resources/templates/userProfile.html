@@ -3,20 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
 </head>
 <body>
 
-<h1 th:text="'Welcome '+ ${user.username}"></h1>
 <div><img th:src="@{https://cdn-icons-png.flaticon.com/512/149/149071.png}"/></div>
 <div>
-    <a th:href="${'/feed'}"><button >Go To Your Feed Page</button> </a></div>
-<div>
-    <a th:href="${'/users'}"><button >Follow Users</button> </a></div>
-</div>
-<div>
-    <a th:href="${'/followers'}"><button >See Your Followers</button> </a></div>
-</div>
+    <a th:href="${'/feed'}"><button >Go Back To Your Feed Page</button> </a></div>
+<a th:href="${'/profile'}"><button >Go Back To Your Profile</button> </a>
+<form th:method="post" th:action="@{'/follow?username='+${user.getUsername()}}">
+    <div> <button type="submit" >Follow</button> </div>
+</form>
 <ul>
 
     <li th:text="'User Name: ' + ${user.username}"></li>
@@ -28,22 +24,12 @@
 
 </ul>
 <div>
-    <form th:action="@{/post}" method="post">
-        <label for="body">Add Post Here</label>
-        <textarea id="body" name="body"></textarea>
-        <input type="submit" value="Add Post"/>
-    </form>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
-    </form>
-</div>
-
-<div>
-    <h4>Your Posts</h4>
+    <h4>Posts</h4>
     <div th:each="post:${user.posts}">
         <h5 th:text="${'post' + post.createdAt}"></h5>
         <p  th:text="${post.body}"></p>
     </div>
 </div>
+
 </body>
 </html>
