@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a th:href="${'/feed'}">
+        <button>Go Back To Your Feed Page</button>
+    </a></div>
+<a th:href="${'/profile'}">
+    <button>Go Back To Your Profile</button>
+</a>
+</div>
+<div th:if="${allUsers.size() > 0}">
+    <div th:each="user : ${allUsers}">
+        <div th:if="${user.getUsername() != loggedUser.getUsername() && !loggedUser.getFollowing.contains(user)}">
+            <div>
+                <div><img th:src="@{https://cdn-icons-png.flaticon.com/512/149/149071.png}"/></div>
+                <div>
+                    <h4 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></h4> <span
+                        th:text="${user.getBio()}"></span>
+                    <span th:text="${user.getUsername()}"></span>
+                    <div><a th:href="${'/users/' + user.username}">
+                        <button>View</button>
+                    </a></div>
+                    <form th:method="post" th:action="@{'/follow?username='+${user.username}}">
+                        <div>
+                            <button type="submit">Follow</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container users-list" th:unless="${allUsers.size() > 0}">
+    <div class="row justify-content-md-center">
+        <p>There are no users yet, You can go back to your Feeds <a th:href="${'/feed'}">here</a></p>
+    </div>
+</div>
+</body>
+</html>

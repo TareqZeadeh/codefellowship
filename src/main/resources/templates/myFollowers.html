@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a th:href="${'/feed'}">
+    <button>Go Back To Your Feed Page</button>
+</a></div>
+<a th:href="${'/profile'}">
+    <button>Go Back To Your Profile</button>
+</a>
+<div><h2>Your Followers</h2></div>
+<div th:each="user : ${followers}">
+    <div >
+        <div>
+            <div><img th:src="@{https://cdn-icons-png.flaticon.com/512/149/149071.png}"/></div>
+            <div>
+                <h4 th:text="${user.getFirstName()} + ' ' + ${user.getLastName()}"></h4> <span
+                    th:text="${user.getBio()}"></span>
+                <span th:text="${user.getUsername()}"></span>
+                <div><a th:href="${'/users/' + user.username}">
+                    <button>View</button>
+                </a></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

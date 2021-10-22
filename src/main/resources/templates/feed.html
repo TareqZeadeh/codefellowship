@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div><a th:href="${'/profile'}"><button >Go Back To Your Profile</button> </a></div>
+<div  th:each="following:${allFollowing}">
+    <div class="card-body">
+        <div> <img th:src="@{https://cdn-icons-png.flaticon.com/512/149/149071.png}"/></div>
+        <h5 class="card-title" th:text="${following.firstName + ' ' + following.lastName}"></h5>
+        <h6  th:text="${following.username}"></h6>
+        <a th:href="${'/users/' + following.username}"><button >View</button> </a>
+        <div>
+            <h4>Posts</h4>
+            <div th:each="post:${following.posts}">
+                <h5 th:text="${'post' + post.createdAt}"></h5>
+                <p  th:text="${post.body}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
